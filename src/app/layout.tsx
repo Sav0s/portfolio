@@ -1,15 +1,17 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import Provider from './provider';
+import './globals.css';
 
-const inter = Inter({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-jetbrains-mono',
 });
 
 export const metadata: Metadata = {
-  title: 'Fabian Hauser | Portfolio',
-  description: 'Personal portfolio of Fabian Hauser.',
+  title: 'fabian hauser | portfolio',
+  description: 'full-stack developer portfolio of fabian hauser.',
 };
 
 export default function RootLayout({
@@ -18,8 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body>
+    <html
+      lang="en"
+      className={`${jetbrainsMono.variable} dark`}
+      data-theme="dark"
+      suppressHydrationWarning
+    >
+      <body className={jetbrainsMono.className}>
         <Provider>{children}</Provider>
       </body>
     </html>
