@@ -1,131 +1,118 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import AsciiBackground from '@/components/animations/AsciiBackground';
-import TypewriterText from '@/components/animations/TypewriterText';
+import { useEffect, useRef } from 'react';
 import { profile } from '@/data/portfolio';
 
-export default function HeroSection() {
+interface Props {
+  glitch: boolean;
+}
+
+export default function HeroSection({ glitch }: Props) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (scrollRef.current) {
+        scrollRef.current.classList.toggle('hide', window.scrollY > 60);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Trigger reveal animations on mount
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>('.hero-reveal');
+    els.forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), 100 + i * 120);
+    });
+  }, []);
+
   return (
     <section
-      id="hero"
+      id="top"
+      className="hero-section"
       style={{
-        position: 'relative',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+        textAlign: 'center',
+        padding: '120px 28px 80px',
+        position: 'relative',
       }}
     >
-      <AsciiBackground />
-
-      {/* Radial vignette — darkens center so text is readable over ASCII */}
       <div
-        aria-hidden="true"
+        className="reveal hero-reveal"
         style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'radial-gradient(ellipse 70% 70% at 50% 50%, rgba(8,8,8,0.75) 0%, transparent 100%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          textAlign: 'center',
-          padding: '0 1.5rem',
-          maxWidth: '800px',
+          color: 'var(--ice)',
+          fontSize: 13,
+          letterSpacing: '0.08em',
+          marginBottom: 28,
+          textShadow: '0 0 8px var(--ice-glow)',
         }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          style={{
-            color: 'var(--ice)',
-            fontSize: '0.8rem',
-            letterSpacing: '0.2em',
-            marginBottom: '1.25rem',
-            fontWeight: 500,
-          }}
-        >
-          [ {profile.role} ]
-        </motion.p>
+        [ {profile.role} ]
+      </div>
 
-        <h1
-          style={{
-            fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-            fontWeight: 700,
-            color: '#ffffff',
-            lineHeight: 1.1,
-            marginBottom: '1rem',
-            letterSpacing: '-0.02em',
-          }}
+      <h1
+        className="reveal hero-reveal"
+        style={{
+          fontSize: 'clamp(32px, 12vw, 128px)',
+          fontWeight: 700,
+          margin: '0 0 18px',
+          letterSpacing: '-0.02em',
+          lineHeight: 0.98,
+          color: 'var(--foreground)',
+        }}
+      >
+        <span
+          className={glitch ? 'glitch' : undefined}
+          data-text={glitch ? profile.name : undefined}
         >
-          <TypewriterText
-            text={profile.name}
-            delay={80}
-            startDelay={600}
-            showCursor={false}
-          />
-        </h1>
+          {profile.name}
+        </span>
+      </h1>
 
-        <p
-          style={{
-            fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-            color: 'var(--foreground)',
-            opacity: 0.7,
-            marginBottom: '3rem',
-          }}
-        >
-          <TypewriterText
-            text={profile.tagline}
-            delay={50}
-            startDelay={600 + profile.name.length * 80 + 200}
-          />
-        </p>
+      <div
+        className="reveal hero-reveal"
+        style={{
+          color: '#b0b0b0',
+          fontSize: 'clamp(16px, 1.4vw, 20px)',
+          fontWeight: 300,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <span>{profile.tagline}</span>
+        <span className="cursor-blink" />
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            delay:
-              0.6 +
-              (profile.name.length * 80) / 1000 +
-              0.2 +
-              (profile.tagline.length * 50) / 1000 +
-              0.5,
-            duration: 0.5,
-          }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '0.5rem',
-          }}
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              color: 'var(--foreground)',
-              opacity: 0.4,
-              fontSize: '0.75rem',
-              letterSpacing: '0.15em',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.25rem',
-            }}
-          >
-            <span>scroll</span>
-            <span style={{ color: 'var(--ice)', fontSize: '1rem' }}>↓</span>
-          </motion.div>
-        </motion.div>
+      <div
+        ref={scrollRef}
+        className="reveal hero-reveal"
+        style={{
+          position: 'absolute',
+          bottom: 44,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          color: 'var(--muted)',
+          fontSize: 11,
+          letterSpacing: '0.22em',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 8,
+          transition: 'opacity 400ms ease, transform 400ms ease',
+        }}
+      >
+        <style>{`
+          .hide { opacity: 0 !important; transform: translateX(-50%) translateY(10px) !important; pointer-events: none; }
+        `}</style>
+        <span>scroll</span>
+        <span style={{ color: 'var(--ice)', animation: 'scroll-bob 2s ease-in-out infinite' }}>↓</span>
       </div>
     </section>
   );

@@ -14,9 +14,12 @@
   --background: #080808;
   --foreground: #e8e8e8;
   --ice:        #00cfff;
-  --ice-dim:    #00cfff40;
-  --ice-hover:  #00cfff20;
+  --ice-dim:    rgba(0, 207, 255, 0.40);
+  --ice-hover:  rgba(0, 207, 255, 0.20);
+  --ice-glow:   rgba(0, 207, 255, 0.55);
   --border:     #1f1f1f;
+  --muted:      #6a6a6a;
+  --panel:      #0c0c0c;
 }
 
 /* ── Base reset ───────────────────────────────────── */
@@ -66,10 +69,307 @@ body {
 
 /* ── Cursor blink animation ───────────────────────── */
 @keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  50% { opacity: 0; }
 }
 
 .cursor-blink {
-  animation: cursor-blink 1s step-start infinite;
+  display: inline-block;
+  width: 0.6ch;
+  height: 1em;
+  background: var(--ice);
+  vertical-align: -2px;
+  margin-left: 2px;
+  animation: cursor-blink 1s steps(1) infinite;
+  box-shadow: 0 0 10px var(--ice-glow);
+}
+
+/* ── Scroll bob animation ─────────────────────────── */
+@keyframes scroll-bob {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%       { transform: translateY(6px); opacity: 1; }
+}
+
+/* ── Reveal animation ─────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── CRT overlay ──────────────────────────────────── */
+body.crt::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.35) 3px,
+    rgba(0,0,0,0) 4px
+  );
+  mix-blend-mode: multiply;
+}
+body.crt::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+@keyframes crt-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93%  { opacity: 0.94; }
+  94%  { opacity: 1; }
+  96%  { opacity: 0.88; }
+  97%  { opacity: 1; }
+}
+body.crt #app {
+  animation: crt-flicker 5s infinite;
+}
+
+/* ── Glitch effect ────────────────────────────────── */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+.glitch[data-text]::before,
+.glitch[data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+.glitch[data-text]::before {
+  color: #ff2d7a;
+  transform: translate(1px, 0);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: gl-a 4s infinite steps(1);
+}
+.glitch[data-text]::after {
+  color: var(--ice);
+  transform: translate(-1px, 0);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: gl-b 4.5s infinite steps(1);
+}
+@keyframes gl-a {
+  0%, 97%, 100% { transform: translate(0,0); }
+  98% { transform: translate(3px,-1px); }
+  99% { transform: translate(-2px,1px); }
+}
+@keyframes gl-b {
+  0%, 96%, 100% { transform: translate(0,0); }
+  97% { transform: translate(-3px,1px); }
+  99% { transform: translate(2px,-1px); }
+}
+
+/* ── Selection ────────────────────────────────────── */
+::selection {
+  background: var(--ice);
+  color: var(--background);
+}
+
+/* ── Navigation ───────────────────────────────────── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  font-size: 15px;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 220ms ease, border-color 220ms ease, padding 220ms ease;
+}
+.site-nav.scrolled {
+  background: rgba(8, 8, 8, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom-color: var(--border);
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.nav-logo {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  position: relative;
+  z-index: 70;
+}
+.nav-logo-dot { color: var(--ice); }
+
+.nav-links {
+  display: flex;
+  gap: 34px;
+}
+
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.nav-link:hover        { color: var(--ice); }
+.nav-slash             { margin-right: 4px; transition: color 150ms ease; }
+.nav-link:hover .nav-slash { color: var(--ice); }
+
+/* ── Burger button (hidden on desktop) ────────────── */
+.burger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  width: 40px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color 200ms ease;
+  position: relative;
+  z-index: 70;
+}
+.burger:hover  { border-color: var(--ice); }
+.burger.open   { border-color: var(--ice); }
+
+.burger span {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--foreground);
+  transition: transform 240ms ease, opacity 200ms ease;
+}
+.burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg);   background: var(--ice); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); background: var(--ice); }
+
+/* ── Scroll lock when mobile menu is open ─────────── */
+body.menu-open { overflow: hidden; }
+
+/* ── Responsive layout helpers ────────────────────── */
+
+/* Section shell padding */
+.section-shell {
+  padding: 96px 48px;
+  border-bottom: 1px dashed var(--border);
+  position: relative;
+}
+
+/* Max-width wrap */
+.section-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Grid: 2-col projects */
+.grid-projects {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+/* Grid: experience (date + content) */
+.grid-xp {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  padding: 24px 0;
+  border-top: 1px dashed var(--border);
+  transition: background 200ms ease;
+}
+
+/* Grid: skills 4-col */
+.grid-skills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+/* Grid: contact 2-col */
+.grid-contact {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+
+/* Footer bar */
+.footer-bar {
+  padding: 36px 48px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .section-shell       { padding: 72px 24px; }
+  .footer-bar          { padding: 28px 24px; flex-direction: column; gap: 8px; text-align: center; }
+  .grid-projects       { grid-template-columns: 1fr; }
+  .grid-xp             { grid-template-columns: 1fr; gap: 6px; }
+  .grid-skills         { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .grid-contact        { grid-template-columns: 1fr; gap: 32px; }
+  .hero-section        { padding: 56px 24px 96px; min-height: 92vh; }
+  .contact-big         { font-size: clamp(26px, 7vw, 36px) !important; }
+  .section-kicker      { font-size: clamp(26px, 7vw, 36px) !important; }
+
+  /* Show burger, hide desktop gap on nav-links */
+  .burger { display: flex; }
+
+  /* Full-screen overlay for mobile nav */
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: #060606;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    font-size: 22px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 260ms ease;
+  }
+  .nav-links.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-link { color: var(--foreground); }
+
+  /* Corner bracket decorations on the overlay */
+  .nav-links::before,
+  .nav-links::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--ice);
+  }
+  .nav-links::before { top: 72px;   left:  20px; border-top:    1px solid; border-left:  1px solid; }
+  .nav-links::after  { bottom: 20px; right: 20px; border-bottom: 1px solid; border-right: 1px solid; }
+}
+
+@media (max-width: 560px) {
+  .section-shell       { padding: 60px 20px; }
+  .hero-section        { padding: 48px 20px 88px; }
+  .grid-skills         { grid-template-columns: 1fr; }
 }

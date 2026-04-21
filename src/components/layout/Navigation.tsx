@@ -3,91 +3,84 @@
 import { useEffect, useState } from 'react';
 
 const NAV_LINKS = [
-  { label: '// about',      href: '#about'      },
-  { label: '// experience', href: '#experience'  },
-  { label: '// skills',     href: '#skills'      },
-  { label: '// contact',    href: '#contact'     },
+  { label: 'projects',   href: '#projects'   },
+  { label: 'experience', href: '#experience' },
+  { label: 'skills',     href: '#skills'     },
+  { label: 'contact',    href: '#contact'    },
 ] as const;
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen);
+    return () => document.body.classList.remove('menu-open');
+  }, [menuOpen]);
+
+  function handleLinkClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    setMenuOpen(false);
+    const el = document.getElementById(href.slice(1));
+    if (el) {
+      e.preventDefault();
+      window.scrollTo({ top: el.offsetTop - 20, behavior: 'smooth' });
+    }
+  }
+
   return (
     <nav
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        backgroundColor: scrolled ? 'rgba(8, 8, 8, 0.85)' : 'transparent',
-        borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent',
-        transition: 'background-color 0.3s ease, border-color 0.3s ease',
-        padding: '0 2rem',
-        height: '56px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
+      className={`site-nav${scrolled ? ' scrolled' : ''}`}
       aria-label="site navigation"
     >
-      <a
-        href="#hero"
-        style={{
-          color: 'var(--ice)',
-          textDecoration: 'none',
-          fontSize: '0.875rem',
-          letterSpacing: '0.05em',
-          fontWeight: 600,
-        }}
-      >
-        fh<span style={{ color: 'var(--foreground)', opacity: 0.5 }}>._</span>
+      <a href="#top" className="nav-logo">
+        fh<span className="nav-logo-dot">.</span>_
       </a>
 
-      <ul
-        style={{
-          display: 'flex',
-          gap: '2rem',
-          listStyle: 'none',
-          margin: 0,
-          padding: 0,
-        }}
-      >
+      <div id="navLinks" className={`nav-links${menuOpen ? ' open' : ''}`}>
         {NAV_LINKS.map(({ label, href }) => (
-          <li key={href}>
-            <a
-              href={href}
-              style={{
-                color: 'var(--foreground)',
-                textDecoration: 'none',
-                fontSize: '0.8rem',
-                opacity: 0.7,
-                transition: 'color 0.2s ease, opacity 0.2s ease',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement;
-                el.style.color = 'var(--ice)';
-                el.style.opacity = '1';
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLAnchorElement;
-                el.style.color = 'var(--foreground)';
-                el.style.opacity = '0.7';
-              }}
-            >
-              {label}
-            </a>
-          </li>
+          <NavLink key={href} label={label} href={href} onClick={handleLinkClick} />
         ))}
-      </ul>
+      </div>
+
+      <button
+        className={`burger${menuOpen ? ' open' : ''}`}
+        aria-label="toggle menu"
+        aria-expanded={menuOpen}
+        aria-controls="navLinks"
+        onClick={() => setMenuOpen((o) => !o)}
+      >
+        <span /><span /><span />
+      </button>
     </nav>
+  );
+}
+
+function NavLink({
+  label,
+  href,
+  onClick,
+}: {
+  label: string;
+  href: string;
+  onClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
+}) {
+  return (
+    <a href={href} onClick={(e) => onClick(e, href)} className="nav-link">
+      <span className="nav-slash">//</span>
+      {label}
+    </a>
   );
 }
