@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# fabian hauser — portfolio
 
-## Getting Started
+Personal portfolio site built with Next.js. Dark terminal aesthetic with matrix rain, CRT effects, boot sequence, and glitch animations.
 
-First, run the development server:
+## tech stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 15** (app router)
+- **React** + **TypeScript**
+- **JetBrains Mono** — exclusive typeface
+- **Framer Motion** — scroll reveal animations
+- **CSS** — no UI framework, all custom styles in `globals.css`
+
+## features
+
+- Matrix rain canvas background
+- Boot sequence overlay (first visit)
+- CRT scanlines + flicker effect
+- Glitch animations on key text
+- Tweaks panel — toggle CRT, matrix, glitch, boot; swap accent color
+- Hamburger nav on mobile
+- Scroll-reveal animations + skill bar animations
+- Easter egg: type `sudo` anywhere
+
+## project structure
+
+```
+src/
+├── app/
+│   ├── globals.css       # all styles + responsive breakpoints
+│   ├── layout.tsx
+│   └── page.tsx          # root: wires tweaks, boot, matrix, CRT
+├── components/
+│   ├── animations/
+│   │   ├── MatrixCanvas.tsx
+│   │   └── BootSequence.tsx
+│   ├── layout/
+│   │   └── Navigation.tsx
+│   ├── sections/
+│   │   ├── HeroSection.tsx
+│   │   ├── ProjectsSection.tsx
+│   │   ├── ExperienceSection.tsx
+│   │   ├── SkillsSection.tsx
+│   │   └── ContactSection.tsx
+│   └── ui/
+│       └── TweaksPanel.tsx
+└── data/
+    └── portfolio.ts      # all content lives here — edit this
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+## updating content
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All content is in `src/data/portfolio.ts` — edit your projects, experience, skills, and contact details there. No need to touch any component files.
