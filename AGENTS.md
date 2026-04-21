@@ -2,15 +2,14 @@
 
 ## Project Overview
 
-Dark terminal-themed portfolio site for Fabian Hauser (full-stack developer). Single-page Next.js app with a CRT/hacker aesthetic: black background, ice-blue (`#00cfff`) accent, JetBrains Mono font, all text lowercase.
+Dark terminal-themed portfolio site for Fabian Hauser (software engineer at Dropbox). Single-page Next.js app with a CRT/hacker aesthetic: black background, ice-blue (`#00cfff`) accent, JetBrains Mono font, all text lowercase.
 
 ## Stack
 
-- **Framework**: Next.js 16 (App Router, no Turbopack in production)
-- **UI**: Chakra UI v3 + Tailwind CSS v4
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
 - **Animation**: Framer Motion
-- **Icons**: react-icons
-- **Language**: TypeScript (strict)
+- **Styles**: Custom CSS in `globals.css` — no UI framework
 
 ## Project Structure
 
@@ -18,23 +17,23 @@ Dark terminal-themed portfolio site for Fabian Hauser (full-stack developer). Si
 src/
   app/
     layout.tsx          # Root layout — JetBrains Mono font, metadata
-    page.tsx            # Single page: Navigation + 5 sections
-    globals.css         # Theme tokens, animations, CRT/glitch effects
-    provider.tsx        # Client boundary wrapper
+    page.tsx            # Root: wires boot sequence, matrix, CRT, tweaks panel
+    globals.css         # All styles: theme tokens, animations, responsive breakpoints
+    provider.tsx        # Client boundary wrapper (passthrough)
   components/
     animations/
-      AsciiBackground.tsx
-      TypewriterText.tsx
-      BootSequence.tsx
-      MatrixCanvas.tsx     # full-screen canvas rain (ice-blue chars, fixed, z-index 0, opacity 0.08)
+      MatrixCanvas.tsx  # Fixed canvas rain (ice-blue chars, z-index 0, opacity 0.08)
+      BootSequence.tsx  # Full-screen terminal boot overlay, runs once per session
     layout/
-      Navigation.tsx
+      Navigation.tsx    # Fixed nav with hamburger menu on mobile
     sections/
       HeroSection.tsx
-      AboutSection.tsx
+      ProjectsSection.tsx
       ExperienceSection.tsx
       SkillsSection.tsx
       ContactSection.tsx
+    ui/
+      TweaksPanel.tsx   # Fixed bottom-right panel: CRT/matrix/glitch toggles + accent swatches
   data/
     portfolio.ts        # Single source of truth for all content
 ```
@@ -44,10 +43,10 @@ src/
 All copy lives in `src/data/portfolio.ts`. To change text, update that file — never hardcode strings in components.
 
 Exports:
-- `profile` — name, role, bio, contact links
+- `profile` — name, role, tagline, contact links
 - `projects: ProjectEntry[]` — showcase projects
-- `experience: ExperienceEntry[]` — work history
-- `skillColumns: SkillColumn[]` — skills with proficiency percentages
+- `experience: ExperienceEntry[]` — work history (title, company, period, bullets)
+- `skillColumns: SkillColumn[]` — skills with proficiency percentages (4 columns)
 - `skills: SkillCategory[]` — derived flat list from skillColumns
 
 ## Design System
@@ -68,9 +67,19 @@ Exports:
 
 ### Typography
 
-- Font: JetBrains Mono (mono only — no sans fallback)
+- Font: JetBrains Mono exclusively
 - All text is forced lowercase via `body { text-transform: lowercase }`
 - Never uppercase or title-case copy in components
+
+### CSS Architecture
+
+All CSS lives in `globals.css` — never use `<style>` JSX tags in components (causes hydration/load-order issues, especially for mobile nav and scroll-lock). Responsive layout helpers use semantic class names:
+
+- `.section-shell` / `.section-wrap` — section padding + max-width
+- `.grid-projects`, `.grid-xp`, `.grid-skills`, `.grid-contact` — responsive grids
+- `.site-nav`, `.nav-links`, `.burger` — navigation
+- `.footer-bar` — footer
+- Breakpoints: 900px (tablet) and 560px (mobile)
 
 ### Animations (CSS classes)
 
@@ -78,6 +87,7 @@ Exports:
 - `.cursor-blink` — blinking block cursor in ice-blue
 - `.glitch[data-text]` — dual-color glitch effect (requires `data-text` attr)
 - `body.crt` — CRT scanline + vignette overlay
+- `body.menu-open` — locks scroll when mobile nav is open
 
 ## Commands
 
@@ -90,9 +100,10 @@ npm run lint     # ESLint
 ## Conventions
 
 - **No comments** unless the why is non-obvious
-- **No light mode** — the site is always dark; don't add color-scheme toggles
+- **No light mode** — always dark; don't add color-scheme toggles
 - **Lowercase everything** — text, component labels, data strings
-- Sections follow the page order: Hero → About → Experience → Skills → Contact
+- All CSS in `globals.css`, never inline `<style>` tags
+- Page order: Hero → Projects → Experience → Skills → Contact
 - New sections go in `src/components/sections/` and get imported in `page.tsx`
 - New content types go in `src/data/portfolio.ts` with a TypeScript interface
 
