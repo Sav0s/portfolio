@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <path d="M5 12 H18 L22 16 H43 V38 a2 2 0 0 1 -2 2 H7 a2 2 0 0 1 -2 -2 Z" fill="#0c0c0c" stroke="#00cfff" stroke-width="1.8"></path>
+  <path d="M5 20 H43" stroke="#00cfff" stroke-opacity="0.4" stroke-width="1"></path>
+  <text x="10" y="33" font-family="&#39;JetBrains Mono&#39;, ui-monospace, monospace" font-size="8" fill="#00cfff">~/projects</text>
+</svg>

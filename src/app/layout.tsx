@@ -12,6 +12,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'fabian hauser | portfolio',
   description: 'full-stack developer portfolio of fabian hauser.',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
