@@ -78,7 +78,7 @@ export default function HeroSection({ glitch }: Props) {
       <div
         className="reveal hero-reveal"
         style={{
-          color: '#b0b0b0',
+          color: 'var(--subtle)',
           fontSize: 'clamp(16px, 1.4vw, 20px)',
           fontWeight: 300,
           display: 'inline-flex',

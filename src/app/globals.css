@@ -18,7 +18,8 @@
   --ice-hover:  rgba(0, 207, 255, 0.20);
   --ice-glow:   rgba(0, 207, 255, 0.55);
   --border:     #1f1f1f;
-  --muted:      #6a6a6a;
+  --subtle:     #b0b0b0;
+  --muted:      #9a9a9a;
   --panel:      #0c0c0c;
 }
 
@@ -184,7 +185,6 @@ body.crt #app {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 52;
-  isolation: isolate;
   display: flex;
   justify-content: space-between;
   align-items: center;
