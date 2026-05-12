@@ -75,7 +75,7 @@ export default function ContactSection() {
               together.
             </h2>
             <p style={{ color: 'var(--muted)', maxWidth: 520 }}>
-              open to new opportunities, collaborations, or just a good conversation. best reached by email.
+              always up for interesting collaborations, side projects, or just a good conversation. best reached by email.
             </p>
           </div>
 
