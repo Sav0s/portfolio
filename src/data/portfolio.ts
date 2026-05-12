@@ -42,16 +42,6 @@ export const projects: ProjectEntry[] = [
     sourceUrl: '#',
     version: 'v.2.4.1',
   },
-  {
-    idx: '// project_03',
-    title: 'ghostline — developer telemetry cli',
-    description:
-      'a tui that surfaces prod traces, logs and feature flags right next to your diff. drops latency investigations from hours to minutes by correlating spans to git blame inline.',
-    stack: ['go', 'bubbletea', 'otlp', 'sqlite'],
-    caseStudyUrl: '#',
-    sourceUrl: '#',
-    version: 'v.0.9.0',
-  },
 ];
 
 export interface ExperienceEntry {
