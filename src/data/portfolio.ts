@@ -15,6 +15,7 @@ export interface ProjectEntry {
   title: string;
   description: string;
   stack: string[];
+  image?: string;
   caseStudyUrl?: string;
   sourceUrl?: string;
   version: string;
@@ -23,6 +24,16 @@ export interface ProjectEntry {
 export const projects: ProjectEntry[] = [
   {
     idx: '// project_01',
+    title: 'portfolio — personal dev site',
+    description:
+      'this site. a terminal-inspired portfolio built with next.js and typescript. features matrix rain, crt-style animations, glitch effects, and a boot sequence. fully responsive with a green-accented dark theme.',
+    stack: ['next.js', 'typescript', 'tailwind', 'framer-motion'],
+    image: '/projects/portfolio-hero.png',
+    sourceUrl: 'https://github.com/Sav0s/portfolio',
+    version: 'v.1.0.0',
+  },
+  {
+    idx: '// project_02',
     title: 'tidepool — realtime event mesh',
     description:
       'a horizontally-scalable pub/sub layer with sub-millisecond fanout, written in rust. handles ~2m msgs/s per node with backpressure-aware consumers and zero-copy decode paths.',
@@ -32,7 +43,7 @@ export const projects: ProjectEntry[] = [
     version: 'v.2.4.1',
   },
   {
-    idx: '// project_02',
+    idx: '// project_03',
     title: 'ghostline — developer telemetry cli',
     description:
       'a tui that surfaces prod traces, logs and feature flags right next to your diff. drops latency investigations from hours to minutes by correlating spans to git blame inline.',
