@@ -4,7 +4,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-ice:        #00cfff;
+  --color-ice:        #35ff7d;
   --font-sans:        var(--font-jetbrains-mono);
   --font-mono:        var(--font-jetbrains-mono);
 }
@@ -13,10 +13,10 @@
 :root {
   --background: #080808;
   --foreground: #e8e8e8;
-  --ice:        #00cfff;
-  --ice-dim:    rgba(0, 207, 255, 0.40);
-  --ice-hover:  rgba(0, 207, 255, 0.20);
-  --ice-glow:   rgba(0, 207, 255, 0.55);
+  --ice:        #35ff7d;
+  --ice-dim:    rgba(53, 255, 125, 0.40);
+  --ice-hover:  rgba(53, 255, 125, 0.20);
+  --ice-glow:   rgba(53, 255, 125, 0.55);
   --border:     #1f1f1f;
   --muted:      #6a6a6a;
   --panel:      #0c0c0c;
@@ -59,7 +59,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00a8d4;
+  background: #28d469;
 }
 
 * {
