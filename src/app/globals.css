@@ -18,7 +18,8 @@
   --ice-hover:  rgba(0, 207, 255, 0.20);
   --ice-glow:   rgba(0, 207, 255, 0.55);
   --border:     #1f1f1f;
-  --muted:      #6a6a6a;
+  --subtle:     #b0b0b0;
+  --muted:      #9a9a9a;
   --panel:      #0c0c0c;
 }
 

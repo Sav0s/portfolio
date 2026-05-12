@@ -74,8 +74,9 @@ export default function Page() {
 
       <MatrixCanvas visible={tweaks.matrix} />
 
+      <Navigation />
+
       <div id="app" style={{ position: 'relative', zIndex: 2 }}>
-        <Navigation />
         <main>
           <HeroSection glitch={tweaks.glitch} />
           <ProjectsSection />
