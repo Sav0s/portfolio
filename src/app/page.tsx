@@ -9,46 +9,16 @@ import SkillsSection from '@/components/sections/SkillsSection';
 import ContactSection from '@/components/sections/ContactSection';
 import MatrixCanvas from '@/components/animations/MatrixCanvas';
 import BootSequence from '@/components/animations/BootSequence';
-import TweaksPanel from '@/components/ui/TweaksPanel';
-import type { TweakState } from '@/components/ui/TweaksPanel';
-
-const DEFAULTS: TweakState = {
-  crt: true,
-  matrix: true,
-  glitch: true,
-  bootOnLoad: false,
-  accent: '#00cfff',
-};
-
-function applyAccent(hex: string) {
-  const rgb = hex.replace('#', '').match(/.{2}/g)!.map((x) => parseInt(x, 16));
-  const root = document.documentElement;
-  root.style.setProperty('--ice', hex);
-  root.style.setProperty('--ice-dim', `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.40)`);
-  root.style.setProperty('--ice-hover', `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.20)`);
-  root.style.setProperty('--ice-glow', `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.55)`);
-}
 
 export default function Page() {
-  const [tweaks, setTweaks] = useState<TweakState>(DEFAULTS);
   const [booting, setBooting] = useState(false);
-  const [tweaksOpen, setTweaksOpen] = useState(false);
 
   useEffect(() => {
-    const shouldBoot = tweaks.bootOnLoad ? true : !sessionStorage.getItem('booted');
-    if (shouldBoot) {
+    if (!sessionStorage.getItem('booted')) {
       setBooting(true);
       sessionStorage.setItem('booted', '1');
     }
-  // run once on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleTweakChange = (state: TweakState) => {
-    setTweaks(state);
-    applyAccent(state.accent);
-    document.body.classList.toggle('crt', state.crt);
-  };
 
   // keyboard easter egg: type "sudo"
   useEffect(() => {
@@ -72,13 +42,13 @@ export default function Page() {
     <>
       {booting && <BootSequence onDone={() => setBooting(false)} />}
 
-      <MatrixCanvas visible={tweaks.matrix} />
+      <MatrixCanvas visible={true} />
 
       <Navigation />
 
       <div id="app" style={{ position: 'relative', zIndex: 2 }}>
         <main>
-          <HeroSection glitch={tweaks.glitch} />
+          <HeroSection glitch={true} />
           <ProjectsSection />
           <ExperienceSection />
           <SkillsSection />
@@ -90,30 +60,6 @@ export default function Page() {
           <span>eof</span>
         </footer>
       </div>
-
-      {/* Tweaks toggle button */}
-      <button
-        onClick={() => setTweaksOpen((o) => !o)}
-        aria-label="toggle tweaks panel"
-        style={{
-          position: 'fixed',
-          right: 20,
-          bottom: tweaksOpen ? 310 : 20,
-          zIndex: 201,
-          background: 'var(--panel)',
-          border: '1px solid var(--ice)',
-          color: 'var(--ice)',
-          fontSize: 11,
-          letterSpacing: '0.18em',
-          padding: '6px 12px',
-          cursor: 'pointer',
-          transition: 'bottom 200ms ease',
-        }}
-      >
-        // tweaks
-      </button>
-
-      <TweaksPanel open={tweaksOpen} onChange={handleTweakChange} />
     </>
   );
 }
