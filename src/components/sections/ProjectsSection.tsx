@@ -120,26 +120,34 @@ function ProjectCard({ proj }: { proj: (typeof projects)[number] }) {
           border: '1px solid var(--border)',
           position: 'relative',
           overflow: 'hidden',
-          backgroundImage: 'repeating-linear-gradient(45deg, rgba(0,207,255,0.04) 0 10px, transparent 10px 20px)',
+          backgroundImage: proj.image ? 'none' : 'repeating-linear-gradient(45deg, rgba(53,255,125,0.04) 0 10px, transparent 10px 20px)',
           marginTop: 14,
           marginBottom: 22,
         }}
       >
+        {proj.image ? (
+          <img
+            src={proj.image}
+            alt={proj.title}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        ) : (
+          <span
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'grid',
+              placeItems: 'center',
+              color: 'var(--muted)',
+              fontSize: 11,
+              letterSpacing: '0.22em',
+            }}
+          >
+            project shot
+          </span>
+        )}
         <span style={{ position: 'absolute', top: 8, left: 10, color: 'var(--ice)', fontSize: 10, opacity: 0.8 }}>◤ 16:9</span>
         <span style={{ position: 'absolute', bottom: 8, right: 10, color: 'var(--ice)', fontSize: 10, opacity: 0.8 }}>{proj.version}</span>
-        <span
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'grid',
-            placeItems: 'center',
-            color: 'var(--muted)',
-            fontSize: 11,
-            letterSpacing: '0.22em',
-          }}
-        >
-          project shot
-        </span>
       </div>
 
       <h3 style={{ fontSize: 22, fontWeight: 500, margin: '12px 0 8px' }}>{proj.title}</h3>
