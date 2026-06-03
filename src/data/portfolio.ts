@@ -32,16 +32,6 @@ export const projects: ProjectEntry[] = [
     sourceUrl: 'https://github.com/Sav0s/portfolio',
     version: 'v.1.0.0',
   },
-  {
-    idx: '// project_02',
-    title: 'tidepool — realtime event mesh',
-    description:
-      'a horizontally-scalable pub/sub layer with sub-millisecond fanout, written in rust. handles ~2m msgs/s per node with backpressure-aware consumers and zero-copy decode paths.',
-    stack: ['rust', 'tokio', 'quic', 'protobuf', 'k8s'],
-    caseStudyUrl: '#',
-    sourceUrl: '#',
-    version: 'v.2.4.1',
-  },
 ];
 
 export interface ExperienceEntry {
@@ -57,7 +47,7 @@ export const experience: ExperienceEntry[] = [
     company: 'dropbox',
     period: 'dec 2022 — present',
     bullets: [
-      'full-stack web development — react + typescript on edison (dropbox\'s proprietary web framework), python backend.',
+      "full-stack web development — react + typescript on edison (dropbox's proprietary web framework), python backend.",
       'shipped end-to-end encryption for team folders (hpke, aes-256-gcm) — zero-knowledge at scale across 700m+ users in 180 countries.',
       'feature owner of file requests; drove cross-team deprecation of dropbox passwords.',
       'delivered enterprise security features in the admin console for 100k+ business customers.',
