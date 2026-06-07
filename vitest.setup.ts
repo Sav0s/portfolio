@@ -8,18 +8,19 @@ HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
   fillRect: vi.fn(),
   fillText: vi.fn(),
   clearRect: vi.fn(),
+  measureText: vi.fn(() => ({ width: 0 })),
 })) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
-let rafCounter = 0;
-const rafMap = new Map<number, ReturnType<typeof setTimeout>>();
+let _rafId = 0;
+const _rafHandles = new Map<number, ReturnType<typeof setTimeout>>();
 global.requestAnimationFrame = vi.fn((cb) => {
-  const id = ++rafCounter;
-  rafMap.set(id, setTimeout(() => cb(Date.now()), 0));
+  const id = ++_rafId;
+  _rafHandles.set(id, setTimeout(() => { _rafHandles.delete(id); cb(performance.now()); }, 0));
   return id;
 });
 global.cancelAnimationFrame = vi.fn((id: number) => {
-  const t = rafMap.get(id);
-  if (t !== undefined) { clearTimeout(t); rafMap.delete(id); }
+  const t = _rafHandles.get(id);
+  if (t !== undefined) { clearTimeout(t); _rafHandles.delete(id); }
 });
 
 global.IntersectionObserver = vi.fn(function () {
@@ -32,6 +33,7 @@ global.ResizeObserver = vi.fn(function () {
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
+  configurable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,

@@ -2,14 +2,12 @@ import { render, screen } from '@testing-library/react';
 import Page from './page';
 
 vi.mock('../components/animations/BootSequence', () => ({
-  __esModule: true,
   default: ({ onDone }: { onDone: () => void }) => (
     <div data-testid="boot-sequence" onClick={onDone} />
   ),
 }));
 
 vi.mock('../components/animations/MatrixCanvas', () => ({
-  __esModule: true,
   default: () => <canvas data-testid="matrix-canvas" />,
 }));
 

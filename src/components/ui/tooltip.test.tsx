@@ -1,22 +1,19 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-vi.mock('@chakra-ui/react', () => {
-  const R = require('react');
-  return {
-    Tooltip: {
-      Root: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-      Trigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-      Positioner: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-      Content: R.forwardRef(({ children }: { children: React.ReactNode }, ref: React.Ref<HTMLDivElement>) => (
-        <div ref={ref}>{children}</div>
-      )),
-      Arrow: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-      ArrowTip: () => null,
-    },
-    Portal: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  };
-});
+vi.mock('@chakra-ui/react', () => ({
+  Tooltip: {
+    Root: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Trigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Positioner: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Content: React.forwardRef(({ children }: { children: React.ReactNode }, ref: React.Ref<HTMLDivElement>) => (
+      <div ref={ref}>{children}</div>
+    )),
+    Arrow: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    ArrowTip: () => null,
+  },
+  Portal: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
 
 import { Tooltip } from './tooltip';
 
