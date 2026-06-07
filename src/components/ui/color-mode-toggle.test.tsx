@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { ColorModeToggle } from './color-mode-toggle';
 import { ColorModeProvider } from './color-mode';
 
-jest.mock('@chakra-ui/react', () => ({
+vi.mock('@chakra-ui/react', () => ({
   IconButton: ({ children, ...props }: React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>) => (
     <button {...props}>{children}</button>
   ),
 }));
 
-jest.mock('react-icons/lu', () => ({
+vi.mock('react-icons/lu', () => ({
   LuMoon: () => <svg data-testid="moon-icon" />,
   LuSun: () => <svg data-testid="sun-icon" />,
 }));

@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from './provider';
 
-jest.mock('@chakra-ui/react', () => ({
+vi.mock('@chakra-ui/react', () => ({
   ChakraProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   defaultSystem: {},
 }));
 
-jest.mock('./color-mode', () => ({
+vi.mock('./color-mode', () => ({
   ColorModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
