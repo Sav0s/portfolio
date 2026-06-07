@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import AboutSection from './AboutSection';
 import { profile } from '@/data/portfolio';
 
-jest.mock('framer-motion', () => ({
+vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) => (
       <div {...props}>{children}</div>

@@ -1,7 +1,7 @@
 import { toaster } from './toaster';
 
-jest.mock('@chakra-ui/react', () => ({
-  createToaster: jest.fn(() => ({ placement: 'bottom-end' })),
+vi.mock('@chakra-ui/react', () => ({
+  createToaster: vi.fn(() => ({ placement: 'bottom-end' })),
   ChakraToaster: () => null,
   Portal: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   Spinner: () => null,

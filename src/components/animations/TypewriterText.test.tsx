@@ -2,8 +2,8 @@ import { render, screen, act } from '@testing-library/react';
 import TypewriterText from './TypewriterText';
 
 describe('TypewriterText', () => {
-  beforeEach(() => jest.useFakeTimers());
-  afterEach(() => jest.useRealTimers());
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
 
   it('renders without crashing', () => {
     render(<TypewriterText text="hello" />);
@@ -26,15 +26,15 @@ describe('TypewriterText', () => {
 
   it('types out the full text after the delay', () => {
     render(<TypewriterText text="hi" delay={50} startDelay={0} showCursor={false} />);
-    act(() => { jest.advanceTimersByTime(200); });
+    act(() => { vi.advanceTimersByTime(200); });
     expect(screen.getByText('hi')).toBeInTheDocument();
   });
 
   it('respects startDelay before typing begins', () => {
     render(<TypewriterText text="ab" delay={50} startDelay={500} showCursor={false} />);
-    act(() => { jest.advanceTimersByTime(100); });
+    act(() => { vi.advanceTimersByTime(100); });
     expect(screen.queryByText('ab')).not.toBeInTheDocument();
-    act(() => { jest.advanceTimersByTime(600); });
+    act(() => { vi.advanceTimersByTime(600); });
     expect(screen.getByText('ab')).toBeInTheDocument();
   });
 });

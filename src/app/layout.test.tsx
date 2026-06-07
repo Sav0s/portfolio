@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import RootLayout from './layout';
 
-jest.mock('next/font/google', () => ({
+vi.mock('next/font/google', () => ({
   JetBrains_Mono: () => ({ className: 'mocked', variable: '--font-mocked' }),
 }));
 
