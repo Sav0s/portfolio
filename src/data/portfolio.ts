@@ -32,6 +32,16 @@ export const projects: ProjectEntry[] = [
     sourceUrl: 'https://github.com/Sav0s/portfolio',
     version: 'v.1.0.0',
   },
+  {
+    idx: '// project_02',
+    title: 'kabinen-bar — drink tracker',
+    description:
+      'mobile-first web app for a sports club\'s clubhouse fridge. players tap to log drinks, see their running tab, and settle up; admins manage the drink catalog and billing periods. google oauth / magic-link auth via supabase, postgres data via prisma.',
+    stack: ['next.js', 'typescript', 'chakra ui', 'supabase', 'prisma', 'postgresql'],
+    image: '/projects/drink-tracker-hero.png',
+    sourceUrl: 'https://github.com/Sav0s/drink-tracker',
+    version: 'v.0.1.0',
+  },
 ];
 
 export interface ExperienceEntry {
