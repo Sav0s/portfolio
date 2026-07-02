@@ -24,8 +24,9 @@ describe('ProjectsSection', () => {
 
   it('renders stack tags for each project', () => {
     render(<ProjectsSection />);
-    projects[0].stack.forEach((tech) => {
-      expect(screen.getByText(tech)).toBeInTheDocument();
+    const uniqueTechs = new Set(projects.flatMap((p) => p.stack));
+    uniqueTechs.forEach((tech) => {
+      expect(screen.getAllByText(tech).length).toBeGreaterThan(0);
     });
   });
 
